@@ -1,0 +1,12 @@
+# Added to sdkconfig.defaults when the firmware is built with ESP-IDF 6 or
+# later (CMakeLists.txt): what ESP-IDF 5 does without being asked, and
+# ESP-IDF 5 does not know these names.
+
+# FreeRTOS's queues and tasks, and the ring buffers the UART driver keeps
+# its bytes in, run from RAM, as on ESP-IDF 5. ESP-IDF 6 moved them to flash
+# by default, where a call can wait on the flash cache, and every request
+# passes through them: the link task woken by the UART's queue, the request
+# read from one ring buffer and the reply written to the other. About 11 KB
+# of internal RAM between them, which is what moving them out had saved.
+CONFIG_FREERTOS_IN_IRAM=y
+CONFIG_RINGBUF_IN_IRAM=y
